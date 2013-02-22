@@ -1,0 +1,36 @@
+ <div class="btn-group">   
+  <%if check_for_any_notifications then%>
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Notifications</a>
+  <%else%>
+  <a class="btn dropdown-toggle btn-success notification_header" data-toggle="dropdown" href="#">New Notification</a>
+  <%end%>
+  <ul class="dropdown-menu" style="font-size:x-small;">    
+   <%if check_for_any_notifications == false then%>
+   <li class="notification_button">
+    <%= link_to "Dismiss", { :controller => "notifications", :action => "update_all_notification_last_viewed" }, :remote => true ,class: "btn btn-danger", style: "width:25%"%></li>
+    <%end%>
+
+    <% get_paginated_notifications.each do |n|%> 
+    <% if check_for_single_notification(n) then %>
+    <li class="notifications" style="background-color:green;color:white;padding:3px">
+      <% if n.task != nil then %>
+      <%= render partial: 'shared/task_state', locals: { task: n.task, in_table: false } %>
+      <%end%>
+      <%= n.name%>
+
+    </li>  
+    <%else%>
+    <li style="padding:3px">
+     <% if n.task != nil then %>
+     <%= render partial: 'shared/task_state', locals: { task: n.task,in_table: false  } %>
+     <%end%>
+     <%= n.name%>
+
+
+   </li>
+
+   <%end%>
+   <%end%>
+   <%= will_paginate get_paginated_notifications, :param_name => 'navbar' %>    
+ </ul>
+</div>  

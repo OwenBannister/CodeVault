@@ -1,0 +1,27 @@
+copy inputs to /app folder
+
+in view containing simple form use
+  <%= f.input :task_deadline/whatever,:as => :date_picker%>
+
+
+include at bottom
+<script>
+$(window).load(function() {
+
+  $("#id_of_dateform").datepicker({
+    minDate: 0,
+    maxDate: "+365D",
+    timeFormat: "HH:mm z",
+    showTimezone: true,
+    dateFormat: "dd-mm-yy"
+  });
+
+  $('#id_of_dateform').attr('readonly', true);
+
+</script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css" />
+
+

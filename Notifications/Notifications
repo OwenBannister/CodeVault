@@ -1,0 +1,54 @@
+in controller
+    @notification = Notification.create(:name => "Bidding has been closed on task: #{@task.name}", :task=>@task)
+
+in model
+  belongs_to :sender, :class_name => 'User'
+  belongs_to :recipient, :class_name => 'User'
+  belongs_to :task
+  attr_accessible :name, :recipient, :sender, :task, :last_viewed
+
+in database
+ create_table "notifications", :force => true do |t|
+    t.string   "name"
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.integer  "task_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "description"
+    t.datetime "last_viewed"
+  end
+
+in controller
+class NotificationsController < ApplicationController
+
+  # Update last viewed to current time so it will not show as unseen next page load
+  def update_all_notification_last_viewed
+    Notification.all.select{|n| n.recipient == current_user }.each do |notification|
+      notification.update_attributes(:last_viewed => Time.now)
+      notification.save
+  end
+   respond_to do |format|
+    format.js { render :layout=>false }
+  end
+  end
+
+end
+
+
+in View
+copy notifications folder to app/views
+put  
+
+<%= render partial: 'notifications/notifications' if  current_user_role?(:crowdmember)  %>  
+
+<script>
+$(document).ajaxComplete(function(){
+  $('.notifications').css('background-color', 'white');
+  $('.notifications').css('color','grey');
+  $('.notification_header').removeClass('btn-success');
+  $('.notification_header').text('Notifications');
+  $('.notification_button').remove();               
+});
+</script>
+in header/navbar

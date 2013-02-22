@@ -1,0 +1,10 @@
+copy rating_stars.js into assets/scripts folder
+copy both images into assets/images folder
+insert  <%= javascript_include_tag "rating_stars" %> into application rb
+
+Copy following into view to use
+	<%(1..5).each do |i|%>
+	<li class="rating_star" data-stars="<%= i %>">
+		<img src="assets/grey_star.png" id="star_<%= i%>">
+	</li>
+	<%end%>

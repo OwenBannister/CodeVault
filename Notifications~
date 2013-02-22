@@ -1,0 +1,2 @@
+in controller
+    @notification = Notification.create(:name => "Bidding has been closed on task: #{@task.name}", :task=>@task)
